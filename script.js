@@ -1,5 +1,5 @@
 document.getElementById('simpleForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the default form submission
+    event.preventDefault();  // This line prevents the default form submission
 
     const formData = {
         message: document.getElementById('message').value
@@ -12,7 +12,15 @@ document.getElementById('simpleForm').addEventListener('submit', function(event)
         },
         body: JSON.stringify(formData)
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => alert('Form submitted successfully!'))
-    .catch((error) => console.error('Error:', error));
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('Failed to submit form');
+    });
 });
